@@ -23,6 +23,7 @@ export function DndListItem<T extends { id: string }>({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+    touchAction: 'none',
   };
 
   const handleProps = {
