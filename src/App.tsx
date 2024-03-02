@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { Board } from './logics/Board.ts';
 import { Joker } from './logics/Joker.ts';
 import { evaluateBoard } from './logics/evaluations/evaluateBoard.ts';
@@ -46,6 +46,15 @@ function App() {
     setBoard(newBoard);
   }, []);
 
+  const handleChangeProbabilityPreference = useCallback((event: ChangeEvent) => {
+    const newBoard = board.clone();
+
+    const value = (event.target as HTMLSelectElement).value as 'best' | 'worst' | 'roll';
+    newBoard.probabilityPreference = value;
+
+    setBoard(newBoard);
+  }, [board]);
+
   const handleChangeFlint = useCallback(() => {
     const newBoard = board.clone();
     newBoard.isFlint = !board.isFlint;
@@ -67,6 +76,10 @@ function App() {
   const handleChangeBoard = useCallback((board: Board) => {
     setBoard(board);
   }, []);
+
+  const handleClickReroll = useCallback(() => {
+    setBoard(board.clone());
+  }, [board]);
 
   return (
     <div className="mx-auto my-8 max-w-sm">
@@ -99,6 +112,25 @@ function App() {
           board={board}
           onChangeBoard={handleChangeBoard}
         />
+        <div className="flex text-sm">
+          <label htmlFor="probability-preference" className="mr-1">Probability preference:</label>
+          <select
+            id="probability-preference"
+            value={board.probabilityPreference}
+            onChange={handleChangeProbabilityPreference}
+            className="bg-gray-700 rounded px-1 text-sm"
+          >
+            <option value="best">Best</option>
+            <option value="worst">Worst</option>
+            <option value="roll">Roll</option>
+          </select>
+          {board.probabilityPreference === 'roll' && (
+            <button
+              onClick={handleClickReroll}
+              className="bg-gray-700 rounded px-2 ml-2 text-sm"
+            >Reroll</button>
+          )}
+        </div>
         <div className="flex text-sm">
           <input
             type="checkbox"
@@ -135,7 +167,7 @@ function App() {
         </div>
       </div>
       <div className="text-xs text-gray-400">
-        Probability: {(result.probability * 100.0).toFixed(2)} %
+        Probability: {board.probabilityPreference === 'roll' ? '----' : (result.probability * 100.0).toFixed(2)} %
       </div>
       <div className="text-xs text-gray-400">
         {result.conditions.map((condition, index) => (

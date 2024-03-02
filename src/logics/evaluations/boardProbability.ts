@@ -10,6 +10,13 @@ export function boardProbability(
     probability = Math.min(1, 2.0 * probability);
   }
 
-  result.probability *= probability;
-  return true;
+  if (board.probabilityPreference === 'best') {
+    result.probability *= probability;
+    return true;
+  } else if (board.probabilityPreference === 'worst') {
+    result.probability *= 1 - probability;
+    return false;
+  } else {
+    return Math.random() < probability;
+  }
 }

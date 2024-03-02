@@ -11,6 +11,7 @@ export class Board {
 
   public isPlasmaDeck: boolean = false;
   public isFlint: boolean = false;
+  public probabilityPreference: 'best' | 'worst' | 'roll' = 'best';
 
   public clone(): Board {
     const board = new Board();
@@ -23,6 +24,7 @@ export class Board {
 
     board.isPlasmaDeck = this.isPlasmaDeck;
     board.isFlint = this.isFlint;
+    board.probabilityPreference = this.probabilityPreference;
 
     return board;
   }
