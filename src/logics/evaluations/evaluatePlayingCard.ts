@@ -5,9 +5,9 @@ import { resultAddLog } from './resultAddLog';
 import { resultAddMults } from './resultAddMults';
 import { resultMultMults } from './resultMultMults';
 import { boardProbability } from './boardProbability';
-import { jokerBehaviors } from './joker-behaviors/jokerBehaviors';
 import { BoardResult } from '../BoardResult';
 import { rankToScore } from './rankToScore';
+import { getJokerBehavior } from './getJokerBehavior';
 
 function again(result: BoardResult, playingCard: PlayingCard, why: string) {
   resultAddLog(
@@ -65,10 +65,8 @@ function triggerOnce(result: BoardResult, board: Board, playingCard: PlayingCard
   }
 
   for (const joker of board.jokers) {
-    if (joker.name !== '') {
-      const behavior = jokerBehaviors[joker.name];
-      behavior?.onCardTriggered?.(result, board, joker, playingCard);
-    }
+    const behavior = getJokerBehavior(board, joker);
+    behavior?.onCardTriggered?.(result, board, joker, playingCard);
   }
 }
 
@@ -81,14 +79,12 @@ export function evaluatePlayingCard(result: BoardResult, board: Board, playingCa
   }
 
   for (const joker of board.jokers) {
-    if (joker.name !== '') {
-      const behavior = jokerBehaviors[joker.name];
-      const retrigger = behavior?.shouldRetriggerCard?.(result, board, joker, playingCard);
+    const behavior = getJokerBehavior(board, joker);
+    const retrigger = behavior?.shouldRetriggerCard?.(result, board, joker, playingCard);
 
-      if (retrigger) {
-        again(result, playingCard, joker.toDisplayString());
-        triggerOnce(result, board, playingCard);
-      }
+    if (retrigger) {
+      again(result, playingCard, joker.toDisplayString());
+      triggerOnce(result, board, playingCard);
     }
   }
 }

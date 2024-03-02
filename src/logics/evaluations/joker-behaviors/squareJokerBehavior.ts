@@ -1,4 +1,5 @@
 import { validateInteger } from '../../validations/validateInteger';
+import { getJokerParams } from '../getJokerParams';
 import { resultAddChips } from '../resultAddChips';
 import { resultAddLog } from '../resultAddLog';
 import { JokerBehavior } from './JokerBehavior';
@@ -6,17 +7,19 @@ import { JokerBehavior } from './JokerBehavior';
 export const squareJokerBehavior: JokerBehavior = {
   displayName: 'Square Joker',
   rarity: 'Common',
-  onBeforeEvaluate(result, _board, joker) {
+  onBeforeEvaluate(result, board, joker) {
     const selectedCards = result.board.playingCards.filter((card) => card.selected);
     if (selectedCards.length === 4) {
-      const value = parseInt(joker.params.value ?? '0', 10) + 4;
-      joker.params.value = value.toString();
+      const params = getJokerParams(board, joker);
+      const value = parseInt(params.value ?? '0', 10) + 4;
+      params.value = value.toString();
 
       resultAddLog(result, joker.toDisplayString(), `Upgrade! (+${value} chips)`);
     }
   },
-  evaluate(result, _board, joker) {
-    const value = parseInt(joker.params.value ?? '0', 10);
+  evaluate(result, board, joker) {
+    const params = getJokerParams(board, joker);
+    const value = parseInt(params.value ?? '0', 10);
     resultAddChips(result, joker.toDisplayString(), value);
   },
   params: {

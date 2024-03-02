@@ -8,8 +8,6 @@ import { baronBehavior } from './baronBehavior';
 import { baseballCardBehavior } from './baseballCardBehavior';
 import { blackboardBehavior } from './blackboardBehavior';
 import { bloodstoneBehavior } from './bloodstoneBehavior';
-import { blueprintBehavior } from './blueprintBehavior';
-import { brainstormBehavior } from './brainstormBehavior';
 import { businessCardBehavior } from './businessCardBehavior';
 import { cardSharpBehavior } from './cardSharpBehavior';
 import { cavendishBehavior } from './cavendishBehavior';
@@ -216,7 +214,7 @@ export const jokerBehaviors: Record<JokerName, JokerBehavior> = {
 
   'Showman': createNopJokerBehavior('Showman', 'Uncommon'),
   'FlowerPot': flowerPotBehavior,
-  'Blueprint': blueprintBehavior,
+  'Blueprint': createNopJokerBehavior('Blueprint', 'Rare'), // implemented in getJokerBehavior
   'WeeJoker': weeJokerBehavior,
   'MerryAndy': createNopJokerBehavior('Merry Andy', 'Uncommon'),
 
@@ -234,7 +232,7 @@ export const jokerBehaviors: Record<JokerName, JokerBehavior> = {
 
   'Stuntman': stuntmanBehavior,
   'InvisibleJoker': createNopJokerBehavior('Invisible Joker', 'Rare'),
-  'Brainstorm': brainstormBehavior,
+  'Brainstorm': createNopJokerBehavior('Brainstorm', 'Rare'), // implemented in getJokerBehavior
   'Satellite': createNopJokerBehavior('Satellite', 'Uncommon'),
   'ShootTheMoon': shootTheMoonBehavior,
 

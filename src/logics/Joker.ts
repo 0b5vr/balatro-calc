@@ -9,6 +9,9 @@ export class Joker {
   public edition: '' | Edition = '';
   public params: Record<string, string> = {};
 
+  /** for blueprint and brainstorm */
+  public displayNameOverride: string | null = null;
+
   constructor(name?: '' | JokerName) {
     this.id = crypto.randomUUID();
 
@@ -59,7 +62,7 @@ export class Joker {
   public toDisplayString(): string {
     if (this.name === '') { return ''; }
 
-    const name = jokerBehaviors[this.name]?.displayName ?? this.name;
+    const name = this.displayNameOverride ?? jokerBehaviors[this.name]?.displayName ?? this.name;
     let str = name;
 
     if (this.edition) {

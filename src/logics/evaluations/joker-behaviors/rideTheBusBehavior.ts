@@ -1,4 +1,5 @@
 import { validateInteger } from '../../validations/validateInteger';
+import { getJokerParams } from '../getJokerParams';
 import { isCardFace } from '../isCardFace';
 import { resultAddLog } from '../resultAddLog';
 import { resultAddMults } from '../resultAddMults';
@@ -10,10 +11,11 @@ export const rideTheBusBehavior: JokerBehavior = {
   onBeforeEvaluate(result, board, joker) {
     const hasFaceCard = result.handResult!.scored.some((card) => isCardFace(board, card));
 
+    const params = getJokerParams(board, joker);
     const value = hasFaceCard
       ? 0
-      : parseInt(joker.params.value ?? '0', 10) + 1;
-    joker.params.value = value.toString();
+      : parseInt(params.value ?? '0', 10) + 1;
+    params.value = value.toString();
 
     if (hasFaceCard) {
       resultAddLog(result, joker.toDisplayString(), `Reset (+${value} mult)`);
@@ -21,8 +23,9 @@ export const rideTheBusBehavior: JokerBehavior = {
       resultAddLog(result, joker.toDisplayString(), `Upgrade! (+${value} mult)`);
     }
   },
-  evaluate(result, _board, joker) {
-    const value = parseInt(joker.params.value ?? '0', 10);
+  evaluate(result, board, joker) {
+    const params = getJokerParams(board, joker);
+    const value = parseInt(params.value ?? '0', 10);
     resultAddMults(result, joker.toDisplayString(), value);
   },
   params: {

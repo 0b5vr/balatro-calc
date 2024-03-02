@@ -1,4 +1,5 @@
 import { validateNumber } from '../../validations/validateNumber';
+import { getJokerParams } from '../getJokerParams';
 import { resultAddLog } from '../resultAddLog';
 import { resultMultMults } from '../resultMultMults';
 import { JokerBehavior } from './JokerBehavior';
@@ -6,14 +7,16 @@ import { JokerBehavior } from './JokerBehavior';
 export const obeliskBehavior: JokerBehavior = {
   displayName: 'Obelisk',
   rarity: 'Rare',
-  onBeforeEvaluate(result, _board, joker) {
-    const value = parseFloat(joker.params.value ?? '1.0') + 0.25;
-    joker.params.value = value.toString();
+  onBeforeEvaluate(result, board, joker) {
+    const params = getJokerParams(board, joker);
+    const value = parseFloat(params.value ?? '1.0') + 0.25;
+    params.value = value.toString();
 
     resultAddLog(result, joker.toDisplayString(), `Upgrade! (x${value} mult)`);
   },
-  evaluate(result, _board, joker) {
-    const value = parseFloat(joker.params.value ?? '1.0');
+  evaluate(result, board, joker) {
+    const params = getJokerParams(board, joker);
+    const value = parseFloat(params.value ?? '1.0');
 
     if (value !== 1.0) {
       resultMultMults(result, joker.toDisplayString(), value);

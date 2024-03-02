@@ -1,4 +1,5 @@
 import { validateNumber } from '../../validations/validateNumber';
+import { getJokerParams } from '../getJokerParams';
 import { resultAddLog } from '../resultAddLog';
 import { resultMultMults } from '../resultMultMults';
 import { JokerBehavior } from './JokerBehavior';
@@ -7,7 +8,8 @@ export const vampireBehavior: JokerBehavior = {
   displayName: 'Vampire',
   rarity: 'Uncommon',
   onBeforeEvaluate(result, board, joker) {
-    let value = parseFloat(joker.params.value ?? '1');
+    const params = getJokerParams(board, joker);
+    let value = parseFloat(params.value ?? '1');
 
     const selectedCards = board.playingCards.filter((card) => card.selected);
     for (const card of selectedCards) {
@@ -19,10 +21,11 @@ export const vampireBehavior: JokerBehavior = {
       }
     }
 
-    joker.params.value = value.toFixed(1);
+    params.value = value.toFixed(1);
   },
-  evaluate(result, _board, joker) {
-    const value = parseFloat(joker.params.value ?? '1');
+  evaluate(result, board, joker) {
+    const params = getJokerParams(board, joker);
+    const value = parseFloat(params.value ?? '1');
     resultMultMults(result, joker.toDisplayString(), value);
   },
   params: {

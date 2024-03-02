@@ -6,7 +6,7 @@ import { resultAddLog } from './resultAddLog';
 import { evaluateJoker } from './evaluateJoker';
 import { evaluatePlayingCard } from './evaluatePlayingCard';
 import { evaluateHandCard } from './evaluateHandCard';
-import { jokerBehaviors } from './joker-behaviors/jokerBehaviors';
+import { getJokerBehavior } from './getJokerBehavior';
 
 export function evaluateBoard(board: Board): BoardResult {
   const result: BoardResult = {
@@ -39,10 +39,8 @@ export function evaluateBoard(board: Board): BoardResult {
   resultAddLog(result, undefined, `${hand} lvl.${handLv}`);
 
   for (const joker of board.jokers) {
-    if (joker.name !== '') {
-      const behavior = jokerBehaviors[joker.name];
-      behavior?.onBeforeEvaluate?.(result, board, joker);
-    }
+    const behavior = getJokerBehavior(board, joker);
+    behavior?.onBeforeEvaluate?.(result, board, joker);
   }
 
   if (board.isFlint) {

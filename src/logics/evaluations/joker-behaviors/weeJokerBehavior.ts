@@ -1,4 +1,5 @@
 import { validateInteger } from '../../validations/validateInteger';
+import { getJokerParams } from '../getJokerParams';
 import { isCardRank } from '../isCardRank';
 import { resultAddChips } from '../resultAddChips';
 import { resultAddLog } from '../resultAddLog';
@@ -8,7 +9,8 @@ export const weeJokerBehavior: JokerBehavior = {
   displayName: 'Wee Joker',
   rarity: 'Rare',
   onBeforeEvaluate(result, board, joker) {
-    let value = parseInt(joker.params.value ?? '0', 10);
+    const params = getJokerParams(board, joker);
+    let value = parseInt(params.value ?? '0', 10);
 
     for (const card of result.handResult!.scored) {
       if (isCardRank(board, card, '2')) {
@@ -19,10 +21,11 @@ export const weeJokerBehavior: JokerBehavior = {
       }
     }
 
-    joker.params.value = value.toString();
+    params.value = value.toString();
   },
-  evaluate(result, _board, joker) {
-    const value = parseInt(joker.params.value ?? '0', 10);
+  evaluate(result, board, joker) {
+    const params = getJokerParams(board, joker);
+    const value = parseInt(params.value ?? '0', 10);
     resultAddChips(result, joker.toDisplayString(), value);
   },
   params: {
