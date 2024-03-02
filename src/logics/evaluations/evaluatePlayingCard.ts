@@ -71,6 +71,11 @@ function triggerOnce(result: BoardResult, board: Board, playingCard: PlayingCard
 }
 
 export function evaluatePlayingCard(result: BoardResult, board: Board, playingCard: PlayingCard): void {
+  if (playingCard.debuffed) {
+    resultAddLog(result, playingCard.toDisplayString(), 'Debuffed');
+    return;
+  }
+
   triggerOnce(result, board, playingCard);
 
   if (playingCard.seal === 'RedSeal') {

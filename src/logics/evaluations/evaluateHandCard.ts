@@ -32,6 +32,11 @@ function triggerOnce(result: BoardResult, board: Board, playingCard: PlayingCard
 }
 
 export function evaluateHandCard(result: BoardResult, board: Board, playingCard: PlayingCard): void {
+  if (playingCard.debuffed) {
+    resultAddLog(result, playingCard.toDisplayString(), 'Debuffed');
+    return;
+  }
+
   const happened = triggerOnce(result, board, playingCard);
 
   if (happened) {

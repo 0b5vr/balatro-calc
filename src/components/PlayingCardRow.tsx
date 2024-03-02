@@ -97,6 +97,16 @@ export function PlayingCardRow({board, playingCard, onChangeBoard, handleProps}:
     onChangeBoard(newBoard);
   }, [board, cardIndex, onChangeBoard, playingCard]);
 
+  const handleChangeDebuffed = useCallback((event: ChangeEvent) => {
+    const newBoard = board.clone();
+    const newPlayingCard = playingCard.clone();
+
+    newPlayingCard.debuffed = (event.target as HTMLSelectElement).value === 'true';
+
+    newBoard.playingCards[cardIndex] = newPlayingCard;
+    onChangeBoard(newBoard);
+  }, [board, cardIndex, onChangeBoard, playingCard]);
+
   return (
     <div className="flex gap-1 p-1 bg-gray-800 rounded cursor-default">
       <div
@@ -124,7 +134,7 @@ export function PlayingCardRow({board, playingCard, onChangeBoard, handleProps}:
       >
         <option value=""></option>
         <option value="Bonus">🔼</option>
-        <option value="Mult">❌</option>
+        <option value="Mult">🎀</option>
         <option value="Wild">🎨</option>
         <option value="Glass">🪟</option>
         <option value="Steel">🔩</option>
@@ -152,6 +162,14 @@ export function PlayingCardRow({board, playingCard, onChangeBoard, handleProps}:
         <option value="RedSeal">🔴</option>
         <option value="BlueSeal">🔵</option>
         <option value="PurpleSeal">🟣</option>
+      </select>
+      <select
+        value={`${playingCard.debuffed}`}
+        onChange={handleChangeDebuffed}
+        className="w-6 text-center bg-gray-700 rounded appearance-none"
+      >
+        <option value="false"></option>
+        <option value="true">❌</option>
       </select>
     </div>
   );

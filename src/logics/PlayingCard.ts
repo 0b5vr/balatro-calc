@@ -16,6 +16,7 @@ export class PlayingCard {
   public extraChips: number = 0;
 
   public selected: boolean = false;
+  public debuffed: boolean = false;
 
   public constructor(rankSuit?: `${Rank}${Suit}`) {
     this.id = crypto.randomUUID();
@@ -36,6 +37,7 @@ export class PlayingCard {
     newCard.seal = this.seal;
     newCard.extraChips = this.extraChips;
     newCard.selected = this.selected;
+    newCard.debuffed = this.debuffed;
 
     return newCard;
   }
@@ -51,6 +53,7 @@ export class PlayingCard {
     let seal: '' | Seal = '';
     let extraChips = 0;
     let selected = false;
+    let debuffed = false;
 
     for (let i = 1; i < arr.length; i ++) {
       const e = arr[i];
@@ -66,6 +69,10 @@ export class PlayingCard {
       if (e === 'selected') {
         selected = true;
       }
+
+      if (e === 'debuffed') {
+        debuffed = true;
+      }
     }
 
     const newCard = new PlayingCard();
@@ -77,6 +84,7 @@ export class PlayingCard {
     newCard.seal = seal;
     newCard.extraChips = extraChips;
     newCard.selected = selected;
+    newCard.debuffed = debuffed;
 
     return newCard;
   }
@@ -89,6 +97,7 @@ export class PlayingCard {
     if (this.seal) { str += `,${this.seal}`; }
     if (this.extraChips) { str += `,+${this.extraChips}`; }
     if (this.selected) { str += ',selected'; }
+    if (this.debuffed) { str += ',debuffed'; }
 
     return str;
   }
@@ -99,7 +108,7 @@ export class PlayingCard {
     if (this.enhancement) {
       str += {
         'Bonus': '🔼',
-        'Mult': '❌',
+        'Mult': '🎀',
         'Wild': '🎨',
         'Glass': '🪟',
         'Steel': '🔩',
@@ -124,6 +133,10 @@ export class PlayingCard {
         'BlueSeal': '🔵',
         'PurpleSeal': '🟣',
       }[this.seal];
+    }
+
+    if (this.debuffed) {
+      str += '❌';
     }
 
     if (this.extraChips) { str += ` (+${this.extraChips})`; }
