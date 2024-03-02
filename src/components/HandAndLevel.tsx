@@ -1,7 +1,8 @@
-import { ChangeEvent, useCallback } from 'react';
+import { ChangeEvent, useCallback, useMemo } from 'react';
 import { Board } from '../logics/Board';
 import { BoardResult } from '../logics/BoardResult';
 import { validateInteger } from '../logics/validations/validateInteger';
+import { handDisplayNames } from '../logics/handDisplayNames';
 
 export function HandAndLevel({result, board, onChangeBoard, className}: {
   result: BoardResult;
@@ -13,6 +14,11 @@ export function HandAndLevel({result, board, onChangeBoard, className}: {
   const handLevel = hand != null
     ? board.handLevels.get(hand) ?? 1
     : 0;
+
+  const handDisplayName = useMemo(() => {
+    if (hand == null) { return '----'; }
+    return handDisplayNames[hand];
+  }, [hand]);
 
   const handleChange = useCallback((event: ChangeEvent) => {
     if (hand == null) { return; }
@@ -30,9 +36,7 @@ export function HandAndLevel({result, board, onChangeBoard, className}: {
   return (
     <div className={className}>
       <div className="flex gap-1">
-        <div>
-          {result.handResult?.hand ?? '----'}
-        </div>
+        <div>{handDisplayName}</div>
         {hand && <>
           <div>
             lvl.

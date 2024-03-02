@@ -7,6 +7,7 @@ import { evaluateJoker } from './evaluateJoker';
 import { evaluatePlayingCard } from './evaluatePlayingCard';
 import { evaluateHandCard } from './evaluateHandCard';
 import { getJokerBehavior } from './getJokerBehavior';
+import { handDisplayNames } from '../handDisplayNames';
 
 export function evaluateBoard(board: Board): BoardResult {
   const result: BoardResult = {
@@ -30,13 +31,14 @@ export function evaluateBoard(board: Board): BoardResult {
 
   const handResult = result.handResult = evaluateHand(board);
   const { hand, scored } = handResult;
+  const handDisplayName = handDisplayNames[hand];
 
   const handLv = board.handLevels.get(hand) ?? 1;
   const [baseChips, baseMults] = calcBaseChips(hand, handLv);
   result.chips = baseChips;
   result.mults = baseMults;
 
-  resultAddLog(result, undefined, `${hand} lvl.${handLv}`);
+  resultAddLog(result, undefined, `${handDisplayName} lvl.${handLv}`);
 
   for (const joker of board.jokers) {
     const behavior = getJokerBehavior(board, joker);
