@@ -10,6 +10,7 @@ function again(result: BoardResult, playingCard: PlayingCard, why: string) {
     result,
     playingCard.toDisplayString() + ' (Hand)',
     `Again! (${why})`,
+    'retrigger',
   );
 }
 

@@ -16,8 +16,15 @@ function ResultLogRow({ log }: {
       log.type === 'balanced' ? 'text-purple-600' :
       'text-red-600';
 
+    const bgColor =
+      log.type === 'chip' ? 'bg-blue-600/20' :
+      log.type === 'mult' ? 'bg-red-600/20' :
+      log.type === 'retrigger' ? 'bg-amber-600/20' :
+      log.type === 'balanced' ? 'bg-purple-600/20' :
+      'bg-gray-500/20';
+
   return (
-    <div className="flex justify-between gap-1">
+    <div className={`flex justify-between gap-1 pl-1 rounded ${bgColor}`}>
       <div className="flex-grow">
         {log.subject && <span>{log.subject}: </span>}
         {log.event}

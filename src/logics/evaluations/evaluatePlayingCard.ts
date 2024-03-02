@@ -14,6 +14,7 @@ function again(result: BoardResult, playingCard: PlayingCard, why: string) {
     result,
     playingCard.toDisplayString(),
     `Again! (${why})`,
+    'retrigger',
   );
 }
 
