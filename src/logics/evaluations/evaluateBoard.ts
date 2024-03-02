@@ -46,8 +46,8 @@ export function evaluateBoard(board: Board): BoardResult {
   }
 
   if (board.isFlint) {
-    result.chips = Math.floor(result.chips / 2);
-    result.mults = Math.floor(result.mults / 2);
+    result.chips = Math.round(result.chips / 2);
+    result.mults = Math.round(result.mults / 2);
 
     resultAddLog(result, undefined, 'Halved (The Flint)');
   }
